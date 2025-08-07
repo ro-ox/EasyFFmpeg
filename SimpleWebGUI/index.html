@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyFFmpeg - GUI Simple Web FFmpeg Command Generator</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🎬 EasyFFmpeg</h1>
+        <p>Powerful FFmpeg Command Generator</p>
+    </div>
+
+    <div class="main-content">
+        <div class="tab-container">
+            <div class="tab-buttons">
+                <button class="tab-button active" onclick="switchTab('convert')">Format Conversion</button>
+                <button class="tab-button" onclick="switchTab('video')">Edit Video</button>
+                <button class="tab-button" onclick="switchTab('audio')">Edit Audio</button>
+                <button class="tab-button" onclick="switchTab('compress')">Compression</button>
+                <button class="tab-button" onclick="switchTab('extract')">Extraction</button>
+                <button class="tab-button" onclick="switchTab('advanced')">Advance</button>
+            </div>
+
+            <!-- Format Conversion -->
+            <div id="convert" class="tab-content active">
+                <div class="info-box">
+                    <h3>🔄 Convert file formats</h3>
+                    <p>Convert your audio and video files to different formats.</p>
+                </div>
+
+                <div class="form-group">
+                    <label>📁 input File:</label>
+                    <div class="file-input-container">
+                        <input type="file" id="inputFile" class="file-input" accept="video/*,audio/*,image/*,.mkv">
+                        <label for="inputFile" class="file-input-label">
+                            <span>📂</span>
+                            <span>Choose input file</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="outputFormat">🎯 Output format:</label>
+                        <select class="form-control" id="outputFormat">
+                            <optgroup label="Video Formats">
+                                <option value="mp4">MP4</option>
+                                <option value="avi">AVI</option>
+                                <option value="mkv">MKV</option>
+                                <option value="mov">MOV</option>
+                                <option value="wmv">WMV</option>
+                                <option value="flv">FLV</option>
+                                <option value="webm">WebM</option>
+                                <option value="m4v">M4V</option>
+                            </optgroup>
+                            <optgroup label="Image Formats">
+                                <option value="png">PNG</option>
+                                <option value="jpg">JPG</option>
+                                <option value="webp">Webp</option>
+                                <option value="gif">GIF</option>
+                                <option value="avif">AVIF</option>
+                                <option value="tiff">TIFF</option>
+                                <option value="bmp">BMP</option>
+                                <option value="wbmp">WBMP</option>
+                            </optgroup>
+                            <optgroup label="Audio Formats">
+                                <option value="mp3">MP3</option>
+                                <option value="wav">WAV</option>
+                                <option value="flac">FLAC</option>
+                                <option value="aac">AAC</option>
+                                <option value="ogg">OGG</option>
+                                <option value="wma">WMA</option>
+                                <option value="m4a">M4A</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="outputName">📝 Output name:</label>
+                        <input type="text" class="form-control" id="outputName" placeholder="Output name">
+                    </div>
+                </div>
+
+                <div class="preset-buttons">
+                    <div class="preset-button" onclick="setPreset('high')">High quality</div>
+                    <div class="preset-button" onclick="setPreset('medium')">Medium quality</div>
+                    <div class="preset-button" onclick="setPreset('low')">Low quality</div>
+                    <div class="preset-button" onclick="setPreset('fast')">Fast quality</div>
+                </div>
+            </div>
+
+            <!-- Edit Video -->
+            <div id="video" class="tab-content">
+                <div class="info-box">
+                    <h3>🎥 Edit Video</h3>
+                    <p>Edit and adjust your videos</p>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="resolution">📐 Resolution:</label>
+                        <select class="form-control" id="resolution">
+                            <option value="">No change</option>
+                            <option value="1920x1080">1920x1080 (Full HD)</option>
+                            <option value="1280x720">1280x720 (HD)</option>
+                            <option value="854x480">854x480 (480p)</option>
+                            <option value="640x360">640x360 (360p)</option>
+                            <option value="426x240">426x240 (240p)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fps">🎬 Frame rate (FPS):</label>
+                        <select class="form-control" id="fps">
+                            <option value="">No change</option>
+                            <option value="60">60 FPS</option>
+                            <option value="30">30 FPS</option>
+                            <option value="24">24 FPS</option>
+                            <option value="15">15 FPS</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="startTime">⏰ Start time (seconds):</label>
+                        <input type="number" class="form-control" id="startTime" placeholder="0" min="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="duration">⏱️ Duration (seconds):</label>
+                        <input type="number" class="form-control" id="duration" placeholder="The whole video" min="1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>🎨 Video filters:</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="deinterlace">
+                            <label for="deinterlace">Delete Interlacing</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="denoise">
+                            <label for="denoise">DeNoise</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="sharpen">
+                            <label for="sharpen">Sharpen</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="flipH">
+                            <label for="flipH">Horizontal rotation</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="flipV">
+                            <label for="flipV">Vertical rotation</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>🔆 Brightness:</label>
+                    <div class="range-group">
+                        <label for="brightness"></label><input type="range" class="form-control range-input" id="brightness" min="-1" max="1" step="0.1" value="0">
+                        <span class="range-value" id="brightnessValue">0</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>🌈 Contrast:</label>
+                    <div class="range-group">
+                        <label for="contrast"></label><input type="range" class="form-control range-input" id="contrast" min="0" max="3" step="0.1" value="1">
+                        <span class="range-value" id="contrastValue">1</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Audio -->
+            <div id="audio" class="tab-content">
+                <div class="info-box">
+                    <h3>🎵 Edit Audio</h3>
+                    <p>Edit the audio settings of your files</p>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="audioBitrate">🎛️ Sound quality (bitrate):</label>
+                        <select class="form-control" id="audioBitrate">
+                            <option value="">No Change</option>
+                            <option value="320k">320 kbps (Highest quality)</option>
+                            <option value="256k">256 kbps (High quality)</option>
+                            <option value="192k">192 kbps (Medium quality)</option>
+                            <option value="128k">128 kbps (Low quality)</option>
+                            <option value="96k">96 kbps (Very low quality)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sampleRate">📻 Sampling rate:</label>
+                        <select class="form-control" id="sampleRate">
+                            <option value="">Unchanged</option>
+                            <option value="48000">48 kHz</option>
+                            <option value="44100">44.1 kHz</option>
+                            <option value="22050">22 kHz</option>
+                            <option value="16000">16 kHz</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="channels">🔊 Number of channels:</label>
+                    <select class="form-control" id="channels">
+                        <option value="">No change</option>
+                        <option value="1">Mono (1 channel)</option>
+                        <option value="2">Stereo (2 channels)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="volume">🎚️ Volume setting:</label>
+                    <div class="range-group">
+                        <input type="range" class="form-control range-input" id="volume" min="0" max="2" step="0.1" value="1">
+                        <span class="range-value" id="volumeValue">1</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>🎛️ Audio Filters:</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="audioNormalize">
+                            <label for="audioNormalize">Audio Normalization</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="audioNoise">
+                            <label for="audioNoise">Audio Noise Reduction</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Compression -->
+            <div id="compress" class="tab-content">
+                <div class="info-box">
+                    <h3>🗜️ Compress Files</h3>
+                    <p>Reduce the size of your files</p>
+                </div>
+
+                <div class="warning-box">
+                    ⚠️ Note: Higher compression may reduce file quality.
+                </div>
+
+                <div class="form-group">
+                    <label>📊 Compression level:</label>
+                    <div class="preset-buttons">
+                        <div class="preset-button" onclick="setCompression('light')">Low (high quality)</div>
+                        <div class="preset-button" onclick="setCompression('medium')">Medium</div>
+                        <div class="preset-button" onclick="setCompression('high')">High (low volume)</div>
+                        <div class="preset-button" onclick="setCompression('extreme')">Extreme</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="crf">🎥 Video Quality (CRF):</label>
+                        <div class="range-group">
+                            <input type="range" class="form-control range-input" id="crf" min="0" max="51" step="1" value="23">
+                            <span class="range-value" id="crfValue">23</span>
+                        </div>
+                        <small>Less = higher quality, more = lower size</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="preset">⚡ Encoding speed:</label>
+                        <select class="form-control" id="preset">
+                            <option value="ultrafast">Ultra fast</option>
+                            <option value="superfast">Very fast</option>
+                            <option value="veryfast">Fast</option>
+                            <option value="faster">Faster</option>
+                            <option value="fast">Fast</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="slow">Slow</option>
+                            <option value="slower">Slower</option>
+                            <option value="veryslow">Very slow</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Extraction -->
+            <div id="extract" class="tab-content">
+                <div class="info-box">
+                    <h3>🔍 Content Extraction</h3>
+                    <p>Extract audio, images or subtitles from your files</p>
+                </div>
+
+                <div class="form-group">
+                    <label>🎯 Extraction Type:</label>
+                    <div class="preset-buttons">
+                        <div class="preset-button" onclick="setExtraction('audio')">Extract Audio</div>
+                        <div class="preset-button" onclick="setExtraction('frames')">Extract Frames</div>
+                        <div class="preset-button" onclick="setExtraction('subtitle')">Extract Subtitle</div>
+                        <div class="preset-button" onclick="setExtraction('thumbnail')">Create Thumbnail</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="frameInterval">📷 Extract frames at interval (seconds):</label>
+                        <input type="number" class="form-control" id="frameInterval" value="1" min="0.1" step="0.1">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="imageFormat">🖼️ Image format:</label>
+                        <select class="form-control" id="imageFormat">
+                            <option value="png">PNG</option>
+                            <option value="jpg">JPG</option>
+                            <option value="bmp">BMP</option>
+                            <option value="gif">GIF</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced -->
+            <div id="advanced" class="tab-content">
+                <div class="info-box">
+                    <h3>⚙️ Advanced Settings</h3>
+                    <p>Full control over FFmpeg parameters</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="videoCodec">🎛️ Video codec:</label>
+                    <select class="form-control" id="videoCodec">
+                        <option value="">Default</option>
+                        <option value="libx264">H.264 (x264)</option>
+                        <option value="libx265">H.265 (x265)</option>
+                        <option value="libvpx">VP8</option>
+                        <option value="libvpx-vp9">VP9</option>
+                        <option value="copy">Copy (no conversion)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="audioCodec">🎵 audio codec:</label>
+                    <select class="form-control" id="audioCodec">
+                        <option value="">default</option>
+                        <option value="aac">AAC</option>
+                        <option value="mp3">MP3</option>
+                        <option value="libvorbis">Vorbis</option>
+                        <option value="flac">FLAC</option>
+                        <option value="copy">Copy (no conversion)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="threads">⚡ Number of threads:</label>
+                    <input type="number" class="form-control" id="threads" value="0" min="0" max="16">
+                    <small>0 = Use all processor cores</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="extraParams">🛠️ Extra parameters:</label>
+                    <textarea class="form-control" id="extraParams" rows="3" placeholder="Write additional FFmpeg parameters here"></textarea>
+                </div>
+
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="overwrite">
+                        <label for="overwrite">Overwrite existing file</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="verbose">
+                        <label for="verbose">Show full information</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="generate-button" onclick="generateCommand()">
+            🚀 FFmpeg command generation
+        </button>
+
+        <div class="command-output" id="commandOutput">
+            <button class="copy-button" onclick="copyCommand()">📋 Copy</button>
+            <div id="commandText">The FFmpeg command will be displayed here...</div>
+        </div>
+    </div>
+</div>
+
+<script src="./script.js"></script>
+
+</body>
+</html>
